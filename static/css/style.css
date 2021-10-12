@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap');
+
 body {
-    background-color: blue;
+    background-color:#f2f4f3;
+    font-family: "Scheherazade New", sans-serif;
+}
+
+.brand-logo {
+    margin-left: 10px;
+}
+
+.nav-wrapper {
+    background-color: #289944;
+    color: #e8e8e9;
 }
