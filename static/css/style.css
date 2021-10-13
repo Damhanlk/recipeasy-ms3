@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 body {
     background-color:#f2f4f3;
@@ -9,7 +9,9 @@ body {
     margin-left: 10px;
 }
 
-.nav-wrapper {
-    background-color: #289944;
-    color: #e8e8e9;
+/* Register page flash message */ 
+
+.flashes {
+    line-height: 4;
 }
+
