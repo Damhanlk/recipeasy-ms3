@@ -4,7 +4,7 @@
     <h2 class="center-align grey-text text-darken-2">Register</h2>
 
     <div class="row">
-        <form class="col s12 m8 offset-m2" method="POST" action="{{ url_for('register) }}">
+        <form class="col s12 m8 offset-m2" method="POST" action="{{ url_for('register') }}">
             <div class="card-panel">
                 <div class="row">
                     <!-- Username input field -->
@@ -18,14 +18,29 @@
                 <div class="row">
                     <div class="input-field col s12">
                       <i class="fas fa-user-lock prefix amber-text text-darken-2"></i>
-                      <input id="password" name="password" type="password" class="validate">
+                      <input id="password" name="password" type="password" class="validate" minlength="8" maxlength="20"
+                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                        title="Password must be 8 or more characters, and contain at least one number, uppercase and lowercase letter">
                       <label for="password">Password</label>
+                      <span class="center-align grey-text text-darken-1">Password must be 8 or more characters, and contain at least one number, uppercase and lowercase letter.</span>
                     </div>
                   </div>
+                  <!-- Password confirmation field -->
+                  <div class="row">
+                    <div class="input-field col s12">
+                        <i class="fas fa-user-lock prefix amber-text text-darken-2"></i>
+                            <input id="password-confirm" name="password-confirm" type="password" minlength="8" maxlength="20"
+                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Password must be 8 or more characters, and contain at least one number, uppercase and lowercase letter">
+                            <label for="password-confirm">Confirm Password</label>
+                            <span class="center-align grey-text text-darken-1">Passwords must match.</span>
+                            <span class="helper-text" data-success="Passwords Match" data-error="Passwords do not match"></span>
+                    </div>
+                </div>
 
-                  <!-- Register Button -->
+                    <!-- Register Button -->
                      <div class="row">
-                        <button type="submit" class="col s12 btn-large amber darken-2 text-shadow">
+                        <button type="submit" class="col s4 offset-s4 btn-large amber darken-2 text-shadow">
                               Register <i class="fas fa-sign-in-alt"></i>
                         </button>
                      </div>
