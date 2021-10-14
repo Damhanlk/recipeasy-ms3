@@ -27,53 +27,54 @@
                     <i class="fas fa-utensils prefix amber-text text-darken-2"></i>
                     <input type="number" id="servings" name="servings" class="validate" min="1" max="20" required>
                     <label for="servings">Servings</label>
-                </div> 
+                </div>
                 <!-- Recipe Time -->
-                
+
                 <!-- Recipe Category Choice -->
+                <!-- Code Adapted from https://materializecss.com/select.html -->
                 <div class="input-field col s12">
                     <i class="fas fa-clipboard-list prefix amber-text text-darken-2"></i>
-                    <select id="category_name" name="category_name" class="validate" required>
-                        <option value="" disabled selected>Select</option>
-                        {% for category in categories %}
-                        <option value="{{ category.category_name }}">{{ category.category_name }}</option>
-                        {% endfor %}
-                    </select>
-                    <label for="category_name">Category</label>
+                        <select id="category_name" name="category_name" class="validate" required>
+                            <option value="" disabled selected></option>
+                                {% for category in categories %}
+                            <option value="{{ category.category_name }}">{{ category.category_name }}</option>
+                                {% endfor %}
+                        </select>
+                            <label for="category_name">Category</label>
+               </div>
+            </div>
+        </div>
+    </div>
+        <!-- Recipe Preparation Time -->
+        <div class="row">
+            <div class="col s6">
+                <h6>Prep Time</h6>
+                <div class="input-field col s12 m7">
+                    <i class="fas fa-clock prefix amber-text text-darken-2"></i>
+                    <input type="number" id="prep_hours" name="prep_hours" class="validate" min="0" max="24">
+                    <label for="prep_hours">Hours</label>
+                </div>
+                <div class="input-field col s9 offset-s3 m5">
+                    <input type="number" id="prep_minutes" name="prep_minutes" class="validate" min="0" max="59"
+                        required>
+                    <label for="prep_minutes">Minutes</label>
+                </div>
+            </div>
+            <!-- Recipe Cooking time -->
+            <div class="col s6">
+                <h6>Cooking Time</h6>
+                <div class="input-field col s12 m7">
+                    <i class="fas fa-clock prefix amber-text text-darken-2"></i>
+                    <input type="number" id="cook_hours" name="cook_hours" class="validate" min="0" max="24">
+                    <label for="cook_hours">Hours</label>
+                </div>
+                <div class="input-field col s9 offset-s3 m5">
+                    <input type="number" id="cook_minutes" name="cook_minutes" class="validate" min="0" max="59"
+                        required>
+                    <label for="cook_minutes">Minutes</label>
                 </div>
             </div>
         </div>
-    </div>
-<!-- Recipe Preparation Time -->
-    <div class="row">
-        <div class="col s6">
-            <h6>Prep Time</h6>
-            <div class="input-field col s12 m7">
-                <i class="fas fa-clock prefix amber-text text-darken-2"></i>
-                <input type="number" id="prep_hours" name="prep_hours" class="validate" min="0" max="24">
-                <label for="prep_hours">Hours</label>
-            </div>
-            <div class="input-field col s9 offset-s3 m5">
-                <input type="number" id="prep_minutes" name="prep_minutes" class="validate" min="0" max="59"
-                    required>
-                <label for="prep_minutes">Minutes</label>
-            </div>
-        </div>
-        <!-- Recipe Cooking time -->
-        <div class="col s6">
-            <h6>Cooking Time</h6>
-            <div class="input-field col s12 m7">
-                <i class="fas fa-clock prefix amber-text text-darken-2"></i>
-                <input type="number" id="cook_hours" name="cook_hours" class="validate" min="0" max="24">
-                <label for="cook_hours">Hours</label>
-            </div>
-            <div class="input-field col s9 offset-s3 m5">
-                <input type="number" id="cook_minutes" name="cook_minutes" class="validate" min="0" max="59"
-                    required>
-                <label for="cook_minutes">Minutes</label>
-            </div>
-        </div>
-    </div>
         <!-- Recipe Description -->
         <div class="row">
             <div class="input-field col s12">
@@ -92,7 +93,8 @@
             <div class="col s12">
                 <ul id="ingredients" class="collection validate">
                     <li class="collection-item">
-                        <a class="btn-floating btn-small amber darken-2 waves-effect waves-light add-ingredient-list-item">
+                        <a
+                            class="btn-floating btn-small amber darken-2 waves-effect waves-light add-ingredient-list-item">
                             <i class="fas fa-plus"></i>
                             <span class="sr-only">Add Ingredient</span>
                         </a>
@@ -119,7 +121,8 @@
         <!-- Submit Button -->
         <div class="row">
             <div class="col s12 center-align">
-                <button type="submit" class="col s4 offset-s4 btn-large text-shadow register-button waves-effect waves-light">
+                <button type="submit"
+                    class="col s4 offset-s4 btn-large text-shadow register-button waves-effect waves-light">
                     Submit Recipe <i class="fas fa-caret-right right"></i>
                 </button>
             </div>
