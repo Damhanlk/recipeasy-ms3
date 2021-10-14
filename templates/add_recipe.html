@@ -10,10 +10,11 @@
             <!-- Recipe Image Upload -->
             <div class="col s12 l6 new-recipe-img box-shadow border-radius box-border">
                 <img src="static/images/add_recipe.jpg" id="recipe-upload-image" alt="New recipe image">
-                <button id="image_upload_btn" class="btn-small upload-btn amber darken-2">Upload Image</button>
-                <input type="hidden" id="image_upload_url" name="image_upload_url"
-                    value="../static/images/add_recipe.jpg">
+                    <button id="image_upload_btn" class="btn-small upload-btn amber darken-2" >Upload Image</button>
+                        <input type="hidden" id="image_upload_url" name="image_upload_url"
+                            value="../static/images/add_recipe.jpg">
             </div>
+
             <div class="col s12 l6">
                 <!-- Recipe Title -->
                 <div class="input-field col s12">
@@ -25,8 +26,8 @@
                 <!-- Recipe Serving Amount -->
                 <div class="input-field col s12">
                     <i class="fas fa-utensils prefix amber-text text-darken-2"></i>
-                    <input type="number" id="servings" name="servings" class="validate" min="1" max="20" required>
-                    <label for="servings">Servings</label>
+                    <input type="number" id="recipe_servings" name="recipe_servings" class="validate" min="1" max="20" required>
+                    <label for="recipe_servings">Servings</label>
                 </div>
                 <!-- Recipe Time -->
 
@@ -51,7 +52,7 @@
                 <h6>Prep Time</h6>
                 <div class="input-field col s12 m7">
                     <i class="fas fa-clock prefix amber-text text-darken-2"></i>
-                    <input type="number" id="prep_hours" name="prep_hours" class="validate" min="0" max="24">
+                    <input type="number" id="prep_hours" name="prep_hours" class="validate" min="0" max="24" required>
                     <label for="prep_hours">Hours</label>
                 </div>
                 <div class="input-field col s9 offset-s3 m5">
