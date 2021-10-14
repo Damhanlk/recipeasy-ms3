@@ -18,9 +18,9 @@
                 <!-- Recipe Title -->
                 <div class="input-field col s12">
                     <i class="fas fa-plus prefix amber-text text-darken-2"></i>
-                    <input id="recipe_title" name="recipe_title" minlength="5" maxlength="50" type="text"
+                    <input id="recipe_name" name="recipe_name" minlength="5" maxlength="50" type="text"
                         pattern="^[A-Za-z0-9 ]*[A-Za-z0-9][A-Za-z0-9 ]*$" class="validate" required>
-                    <label for="recipe_title">Recipe Name</label>
+                    <label for="recipe_name">Recipe Name</label>
                 </div>
                 <!-- Recipe Serving Amount -->
                 <div class="input-field col s12">
@@ -28,9 +28,11 @@
                     <input type="number" id="servings" name="servings" class="validate" min="1" max="20" required>
                     <label for="servings">Servings</label>
                 </div> 
+                <!-- Recipe Time -->
+                
                 <!-- Recipe Category Choice -->
                 <div class="input-field col s12">
-                    <i class="fas fa-birthday-cake prefix amber-text text-darken-2"></i>
+                    <i class="fas fa-clipboard-list prefix amber-text text-darken-2"></i>
                     <select id="category_name" name="category_name" class="validate" required>
                         <option value="" disabled selected>Select</option>
                         {% for category in categories %}
@@ -41,26 +43,37 @@
                 </div>
             </div>
         </div>
-        <!-- Recipe Time inputs -->
+    </div>
+<!-- Recipe Preparation Time -->
+    <div class="row">
         <div class="col s6">
             <h6>Prep Time</h6>
             <div class="input-field col s12 m7">
                 <i class="fas fa-clock prefix amber-text text-darken-2"></i>
-                <input type="number" id="prep-time" name="prep_time" class="validate" min="0" max="24">
+                <input type="number" id="prep_hours" name="prep_hours" class="validate" min="0" max="24">
                 <label for="prep_hours">Hours</label>
             </div>
-        </div>
-        </div>
-            <!-- Recipe Cooking time -->
-            <div class="col s6">
-                <h6>Cooking Time</h6>
-                <div class="input-field col s12 m7">
-                    <i class="fas fa-clock prefix amber-text text-darken-2"></i>
-                    <input type="number" id="cook_hours" name="cook_hours" class="validate" min="0" max="24">
-                    <label for="cook_hours">Hours</label>
-                </div>
+            <div class="input-field col s9 offset-s3 m5">
+                <input type="number" id="prep_minutes" name="prep_minutes" class="validate" min="0" max="59"
+                    required>
+                <label for="prep_minutes">Minutes</label>
             </div>
         </div>
+        <!-- Recipe Cooking time -->
+        <div class="col s6">
+            <h6>Cooking Time</h6>
+            <div class="input-field col s12 m7">
+                <i class="fas fa-clock prefix amber-text text-darken-2"></i>
+                <input type="number" id="cook_hours" name="cook_hours" class="validate" min="0" max="24">
+                <label for="cook_hours">Hours</label>
+            </div>
+            <div class="input-field col s9 offset-s3 m5">
+                <input type="number" id="cook_minutes" name="cook_minutes" class="validate" min="0" max="59"
+                    required>
+                <label for="cook_minutes">Minutes</label>
+            </div>
+        </div>
+    </div>
         <!-- Recipe Description -->
         <div class="row">
             <div class="input-field col s12">
