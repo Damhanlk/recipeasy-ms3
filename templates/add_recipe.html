@@ -10,9 +10,13 @@
             <!-- Recipe Image Upload -->
             <div class="col s12 l6 new-recipe-img box-shadow border-radius box-border">
                 <img src="static/images/add_recipe.jpg" id="recipe-upload-image" alt="New recipe image">
-                    <button id="image_upload_btn" class="btn-small upload-btn amber darken-2" >Upload Image</button>
-                        <input type="hidden" id="image_upload_url" name="image_upload_url"
-                            value="../static/images/add_recipe.jpg">
+                        <div class="input-field col s12">
+                            <input name="image_url" id="image_url" type="url" class="validate"
+                                placeholder="https://example.com"
+                                pattern="https://.*" size="30"
+                                required>
+                            <label for="url">To Upload a Recipe Image - Enter an https:// URL:</label>
+                        </div>
             </div>
 
             <div class="col s12 l6">

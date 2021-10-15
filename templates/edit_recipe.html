@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="center-align white-text text-shadow">Edit Recipe</h1>
+
+<!-- Code adapted from https://materializecss.com/text-inputs.html and https://github.com/RussOakham-->
+<section class="row add-recipe-form">
+    <form class="col s12  box-shadow border-radius box-border" method="POST" action="{{ url_for('add_recipe') }}">
+        <div class="row">
+            <!-- Recipe Image Upload -->
+            <div class="col s12 l6 new-recipe-img box-shadow border-radius box-border">
+                <img src="static/images/add_recipe.jpg" id="recipe-upload-image" alt="New recipe image">
+                        <div class="input-field col s12">
+                            <input name="image_url" id="image_url" type="url" class="validate"
+                                placeholder="https://example.com"
+                                pattern="https://.*" size="30"
+                                required>
+                            <label for="image_url">To Upload a Recipe Image - Enter an https:// URL:</label>
+                        </div>
+            </div>
+
+            <div class="col s12 l6">
+                <!-- Recipe Title -->
+                <div class="input-field col s12">
+                    <i class="fas fa-plus prefix amber-text text-darken-2"></i>
+                    <input id="recipe_name" name="recipe_name" minlength="5" maxlength="50" type="text"
+                        pattern="^[A-Za-z0-9 ]*[A-Za-z0-9][A-Za-z0-9 ]*$" class="validate" required>
+                    <label for="recipe_name">Recipe Name</label>
+                </div>
+                <!-- Recipe Serving Amount -->
+                <div class="input-field col s12">
+                    <i class="fas fa-utensils prefix amber-text text-darken-2"></i>
+                    <input type="number" id="recipe_servings" name="recipe_servings" class="validate" min="1" max="20" required>
+                    <label for="recipe_servings">Servings</label>
+                </div>
+                <!-- Recipe Time -->
+
+                <!-- Recipe Category Choice -->
+                <!-- Code Adapted from https://materializecss.com/select.html -->
+                <div class="input-field col s12">
+                    <i class="fas fa-clipboard-list prefix amber-text text-darken-2"></i>
+                        <select id="category_name" name="category_name" class="validate" required>
+                            <option value="" disabled selected></option>
+                                {% for category in categories %}
+                            <option value="{{ category.category_name }}">{{ category.category_name }}</option>
+                                {% endfor %}
+                        </select>
+                            <label for="category_name">Category</label>
+               </div>
+            </div>
+        </div>
+    </div>
+        <!-- Recipe Preparation Time -->
+        <div class="row">
+            <div class="col s6">
+                <h6>Prep Time</h6>
+                <div class="input-field col s12 m7">
+                    <i class="fas fa-clock prefix amber-text text-darken-2"></i>
+                    <input type="number" id="prep_hours" name="prep_hours" class="validate" min="0" max="24" required>
+                    <label for="prep_hours">Hours</label>
+                </div>
+                <div class="input-field col s9 offset-s3 m5">
+                    <input type="number" id="prep_minutes" name="prep_minutes" class="validate" min="0" max="59"
+                        required>
+                    <label for="prep_minutes">Minutes</label>
+                </div>
+            </div>
+            <!-- Recipe Cooking time -->
+            <div class="col s6">
+                <h6>Cooking Time</h6>
+                <div class="input-field col s12 m7">
+                    <i class="fas fa-clock prefix amber-text text-darken-2"></i>
+                    <input type="number" id="cook_hours" name="cook_hours" class="validate" min="0" max="24">
+                    <label for="cook_hours">Hours</label>
+                </div>
+                <div class="input-field col s9 offset-s3 m5">
+                    <input type="number" id="cook_minutes" name="cook_minutes" class="validate" min="0" max="59"
+                        required>
+                    <label for="cook_minutes">Minutes</label>
+                </div>
+            </div>
+        </div>
+        <!-- Recipe Description -->
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="fas fa-align-left prefix amber-text text-darken-2"></i>
+                <textarea id="recipe_description" name="recipe_description" minlength="25" maxlength="200"
+                    class="materialize-textarea validate" required></textarea>
+                <label for="recipe_description">Description</label>
+                <span class="helper-text">Description must be between 25 and 200 characters</span>
+            </div>
+        </div>
+        <!-- Recipe Ingredients -->
+        <div class="row">
+            <div class="col s12">
+                <h6>Ingredients</h6>
+            </div>
+            <div class="col s12">
+                <ul id="ingredients" class="collection validate">
+                    <li class="collection-item">
+                        <a
+                            class="btn-floating btn-small amber darken-2 waves-effect waves-light add-ingredient-list-item">
+                            <i class="fas fa-plus"></i>
+                            <span class="sr-only">Add Ingredient</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Recipe Instructions -->
+        <div class="row">
+            <div class="col s12">
+                <h6>Instructions</h6>
+            </div>
+            <div class="col s12">
+                <ul id="recipe-instruction" class="collection validate">
+                    <li class="collection-item">
+                        <a class="btn-floating btn-small amber darken-2 waves-effect waves-light add-instruction-item">
+                            <i class="fas fa-plus"></i>
+                            <span class="sr-only">Add Instruction</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="row">
+            <div class="col s12 center-align">
+                <button type="submit"
+                    class="col s4 offset-s4 btn-large text-shadow register-button waves-effect waves-light">
+                    Edit Recipe <i class="fas fa-caret-right right"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+{% endblock %}
