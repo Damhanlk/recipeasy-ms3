@@ -18,14 +18,19 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 # Routing
+
+
 @app.route("/")
 @app.route("/home")
 def home():
     """ Returns list of recipes from database """
+   # recipes = mongo.db.recipes.find().sort("_id", -1)
     recipes = list(mongo.db.recipes.find().sort("created_by", -1))
     categories = mongo.db.categories.find().sort("category_name", 1)
     return render_template(
-        "recipes.html", categories=categories, recipes=recipes)
+        "recipes.html", 
+        categories=categories, 
+        recipes=recipes)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -69,7 +74,7 @@ def login():
             {"username": request.form.get("username").lower()})
        
         if existing_user:
-            # If Truthy - check if hashed password matches user input
+            # Check if hashed password matches user input
             if check_password_hash(
                 existing_user["password"], request.form.get("password")):
                     session["user"] = request.form.get("username").lower()
