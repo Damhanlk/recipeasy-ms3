@@ -2,7 +2,7 @@ $(document).ready(function(){
     $('.sidenav').sidenav({edge: "right"});
     $('select').formSelect();
 
-       // Code from Code Instititue Task Manager Mini-Project - Validates 'select' inputs from Materialize
+       // Code from Code Institute Task Manager Project - Validates 'select' inputs from Materialize
        validateMaterializeSelect();
 
        function validateMaterializeSelect() {
@@ -69,12 +69,12 @@ $('#ingredients').on("click", ".remove-list-item", function (event) {
   $(this).parent().remove();
 });
 
-// Add Method Step item to ingredients list when '+' button hit
-$('#recipe-instruction .add-instruction-item').click(function (event) {
+// Add Instruction to list when button pressed
+$('#recipe_instruction .add-instruction-list-item').click(function (event) {
   let InstructionAddItem = `<li class="collection-item">
                               <div class="input-field">
-                                <textarea name="method_step" class="materialize-textarea" required></textarea>
-                               <label for="method_step">Add Description</label>
+                                <textarea name="recipe_instruction" class="materialize-textarea" required></textarea>
+                               <label for="recipe_instruction">Add Description</label>
                               </div>
                               <a class="remove-list-item">
                               <i class="fas fa-times"></i>
@@ -85,6 +85,6 @@ $('#recipe-instruction .add-instruction-item').click(function (event) {
 });
 
 // Remove Method step item on click
-$('#recipe-instruction').on("click", ".remove-list-item", function (event) {
+$('#recipe_instruction').on("click", ".remove-list-item", function (event) {
   $(this).parent().remove();
 });
