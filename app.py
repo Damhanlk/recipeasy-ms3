@@ -21,7 +21,11 @@ mongo = PyMongo(app)
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html")
+    """ Returns list of recipes from database """
+    recipes = list(mongo.db.recipes.find().sort("recipe_name", -1))
+    categories = mongo.db.categories.find().sort("category_name", 1)
+    return render_template(
+        "recipes.html", categories=categories)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -88,12 +92,12 @@ def login():
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
-        """ take session users's username from the database """
-        username = mongo.db.users.find_one(
-            {"username": session["user"]})["username"]
+    """ take session username from the database """
+    username = mongo.db.users.find_one(
+        {"username": session["user"]})["username"]
 
-        if session["user"]:
-            return render_template("profile.html", username=username)
+    if session["user"]:
+        return render_template("profile.html", username=username)
 
         return redirect(url_for("login"))
 
@@ -113,15 +117,15 @@ def add_recipe():
     if request.method == "POST":
         new_recipe = {
             "category_name": request.form.get("category_name"),
-            "recipe_title": request.form.get("recipe_name"),
-            "image_url": request.form.get("image_upload_url"),
+            "recipe_name": request.form.get("recipe_name"),
+            "image_url": request.form.get("image_url"),
             "prep_hours": request.form.get("prep_hours"),
             "prep_minutes": request.form.get("prep_minutes"),
             "cook_hours": request.form.get("cook_hours"),
             "cook_minutes": request.form.get("cook_minutes"),
             "recipe_description": request.form.get("recipe_description"),
             "recipe_servings": request.form.get("recipe_servings"),
-            "instructions": request.form.getlist("recipe_instructions"),
+            "recipe_instruction": request.form.getlist("recipe_instruction"),
             "ingredients": request.form.getlist("ingredients"),
             "created_by": session["user"],
             }
@@ -132,6 +136,37 @@ def add_recipe():
 
     categories = mongo.db.categories.find().sort("category_name", 1)
     return render_template("add_recipe.html", categories=categories)
+
+
+# Copy add_recipe function and adapt to edit existing recipes
+# Code adapted from Task Manager mini project
+@app.route("/edit_recipe/<recipe_id>", methods=["GET", "POST"])
+def edit_recipe(recipe_id):
+    """ Using bson ObjectID, update recipe in db """
+    if request.method == "POST":
+        submit_update = {
+            "category_name": request.form.get("category_name"),
+            "recipe_name": request.form.get("recipe_name"),
+            "image_url": request.form.get("image_url"),
+            "prep_hours": request.form.get("prep_hours"),
+            "prep_minutes": request.form.get("prep_minutes"),
+            "cook_hours": request.form.get("cook_hours"),
+            "cook_minutes": request.form.get("cook_minutes"),
+            "recipe_description": request.form.get("recipe_description"),
+            "recipe_servings": request.form.get("recipe_servings"),
+            "recipe_instruction": request.form.getlist("recipe_instruction"),
+            "ingredients": request.form.getlist("ingredients"),
+            "created_by": session["user"],
+            }
+
+        mongo.db.recipes.update(
+                {"_id": ObjectId(recipe_id)}, submit_update)
+        flash("Recipe Updated Successfully!")
+
+    categories = mongo.db.categories.find().sort("category_name", 1)
+    return render_template("add_recipe.html", categories=categories)
+
+    return redirect(url_for("login"))
 
 
 
