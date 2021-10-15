@@ -11,7 +11,11 @@ body {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
 }
+
 
 .brand-logo {
     margin-left: 10px;
@@ -69,3 +73,36 @@ body {
 }
 
 
+/* Recipes Page */ 
+
+
+.recipe-container {
+    background-color: #FFFFFF;
+    height: 25%;
+}
+
+.recipe-image-container {
+    background-color: #fff;
+    overflow: hidden;
+    -webkit-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
+}
+
+.recipe-container:hover {
+    -webkit-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+    transform: scale(1.02);
+}
+
+#recipe-upload-image {
+    height: 350px;
+    width: 400px;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    overflow: hidden;
+    display: block;
+    border-radius: 25px;
+}

@@ -182,18 +182,7 @@ def edit_recipe(recipe_id):
 
 
 
-@app.route("/recipes/<recipe_name>")
-def recipe(recipe_name):
-    """ Renders a html page for recipe clicked """
-    recipe_record = mongo.db.recipes.find_one({"recipe_name": recipe_name})
-
-    if recipe_record:  # Valid recipe found
-        return render_template(
-            "recipe_specific.html",
-            recipe=recipe_record)
-
-
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
-            debug=True)
+            debug=False)
