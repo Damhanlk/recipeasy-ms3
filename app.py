@@ -22,10 +22,10 @@ mongo = PyMongo(app)
 @app.route("/home")
 def home():
     """ Returns list of recipes from database """
-    recipes = list(mongo.db.recipes.find().sort("recipe_name", -1))
+    recipes = list(mongo.db.recipes.find().sort("created_by", -1))
     categories = mongo.db.categories.find().sort("category_name", 1)
     return render_template(
-        "recipes.html", categories=categories)
+        "recipes.html", categories=categories, recipes=recipes)
 
 
 @app.route("/register", methods=["GET", "POST"])
