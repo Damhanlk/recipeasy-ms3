@@ -14,7 +14,7 @@
                             <input name="image_url" id="image_url" type="url" class="validate"
                                 placeholder="https://example.com"
                                 pattern="https://.*" size="30"
-                                required>
+                                required value="{{ recipe.image_url }}">
                             <label for="image_url">To Upload a Recipe Image - Enter an https:// URL:</label>
                         </div>
             </div>
@@ -24,13 +24,13 @@
                 <div class="input-field col s12">
                     <i class="fas fa-plus prefix amber-text text-darken-2"></i>
                     <input id="recipe_name" name="recipe_name" minlength="5" maxlength="50" type="text"
-                        pattern="^[A-Za-z0-9 ]*[A-Za-z0-9][A-Za-z0-9 ]*$" class="validate" required>
+                        pattern="^[A-Za-z0-9 ]*[A-Za-z0-9][A-Za-z0-9 ]*$" class="validate" value="{{ recipe.recipe_name }}" required>
                     <label for="recipe_name">Recipe Name</label>
                 </div>
                 <!-- Recipe Serving Amount -->
                 <div class="input-field col s12">
                     <i class="fas fa-utensils prefix amber-text text-darken-2"></i>
-                    <input type="number" id="recipe_servings" name="recipe_servings" class="validate" min="1" max="20" required>
+                    <input type="number" id="recipe_servings" name="recipe_servings" class="validate" value="{{ recipe.recipe_servings }}"min="1" max="20" required>
                     <label for="recipe_servings">Servings</label>
                 </div>
                 <!-- Recipe Time -->
@@ -39,10 +39,14 @@
                 <!-- Code Adapted from https://materializecss.com/select.html -->
                 <div class="input-field col s12">
                     <i class="fas fa-clipboard-list prefix amber-text text-darken-2"></i>
-                        <select id="category_name" name="category_name" class="validate" required>
-                            <option value="" disabled selected></option>
+                        <select id="category_name" name="category_name" class="validate" value="{{ recipe.category_name }}"required>
+                            <option value="" disabled></option>
+                <!-- Code Adapted from Code Institute Task Manager Project -->
                                 {% for category in categories %}
-                            <option value="{{ category.category_name }}">{{ category.category_name }}</option>
+                                    {% if category.category_name == recipe.category_name %}
+                                        <option value="{{ category.category_name }}" selected>{{ category.category_name }}</option>
+                                    {% else %}
+                                        <option value="{{ category.category_name }}">{{ category.category_name }}</option>
                                 {% endfor %}
                         </select>
                             <label for="category_name">Category</label>
@@ -56,11 +60,11 @@
                 <h6>Prep Time</h6>
                 <div class="input-field col s12 m7">
                     <i class="fas fa-clock prefix amber-text text-darken-2"></i>
-                    <input type="number" id="prep_hours" name="prep_hours" class="validate" min="0" max="24" required>
+                    <input type="number" id="prep_hours" name="prep_hours" class="validate" value="{{ recipe.prep_hours }}" min="0" max="24" required>
                     <label for="prep_hours">Hours</label>
                 </div>
                 <div class="input-field col s9 offset-s3 m5">
-                    <input type="number" id="prep_minutes" name="prep_minutes" class="validate" min="0" max="59"
+                    <input type="number" id="prep_minutes" name="prep_minutes" class="validate" value="{{ recipe.prep_minutes }}" min="0" max="59"
                         required>
                     <label for="prep_minutes">Minutes</label>
                 </div>
@@ -70,11 +74,11 @@
                 <h6>Cooking Time</h6>
                 <div class="input-field col s12 m7">
                     <i class="fas fa-clock prefix amber-text text-darken-2"></i>
-                    <input type="number" id="cook_hours" name="cook_hours" class="validate" min="0" max="24">
+                    <input type="number" id="cook_hours" name="cook_hours" class="validate" value="{{ recipe.cook_hours }}" min="0" max="24">
                     <label for="cook_hours">Hours</label>
                 </div>
                 <div class="input-field col s9 offset-s3 m5">
-                    <input type="number" id="cook_minutes" name="cook_minutes" class="validate" min="0" max="59"
+                    <input type="number" id="cook_minutes" name="cook_minutes" class="validate" value="{{ recipe.cook_minutes }}" min="0" max="59"
                         required>
                     <label for="cook_minutes">Minutes</label>
                 </div>
@@ -85,7 +89,7 @@
             <div class="input-field col s12">
                 <i class="fas fa-align-left prefix amber-text text-darken-2"></i>
                 <textarea id="recipe_description" name="recipe_description" minlength="25" maxlength="200"
-                    class="materialize-textarea validate" required></textarea>
+                    class="materialize-textarea validate" value="{{ recipe.recipe_description }}" required></textarea>
                 <label for="recipe_description">Description</label>
                 <span class="helper-text">Description must be between 25 and 200 characters</span>
             </div>
@@ -97,9 +101,23 @@
             </div>
             <div class="col s12">
                 <ul id="ingredients" class="collection validate">
+                    <!-- Loop through Array of stored Ingredients in db - 
+                        code sourced and adapted from https://github.com/seanyoung247?tab=repositories -->
+                    {% for ingredient in recipe.ingredients %}
+                    <li class="collection-item">
+                        <div class="input-field">
+                            <input name="ingredients" type="text" maxlength="100" required value="{{ ingredient }}"
+                                pattern="^[A-Za-z0-9 ]*[A-Za-z0-9][A-Za-z0-9 ]*$">
+                        </div>
+                        <a class="remove-list-item">
+                            <i class="fas fa-times"></i>
+                            <span class="sr-only">Remove Ingredient</span>
+                        </a>
+                    </li>
+                    {% endfor %}
                     <li class="collection-item">
                         <a
-                            class="btn-floating btn-small amber darken-2 waves-effect waves-light add-ingredient-list-item">
+                            class="btn-floating btn-small amber darken-2 add-ingredient-list-item">
                             <i class="fas fa-plus"></i>
                             <span class="sr-only">Add Ingredient</span>
                         </a>
@@ -113,22 +131,37 @@
                 <h6>Instructions</h6>
             </div>
             <div class="col s12">
-                <ul id="recipe-instruction" class="collection validate">
+
+                <ul id="recipe_instruction" class="collection validate">
+                    {% for instruction in recipe.recipe_instruction %}
+                      <li class="collection-item">
+                        <div class="input-field">
+                          <textarea name="recipe_instruction" class="materialize-textarea" required>
+                            {{- instruction -}}
+                          </textarea>
+                        </div>
+                            <a class="remove-list-item"><i class="fas fa-times">Remove Instruction</i></a>
+                      </li>
+                    {% endfor %}
                     <li class="collection-item">
-                        <a class="btn-floating btn-small amber darken-2 waves-effect waves-light add-instruction-item">
-                            <i class="fas fa-plus"></i>
-                            <span class="sr-only">Add Instruction</span>
+                        <a class="btn-floating btn-small add-instruction-list-item">
+                            <i class="fas fa-plus">Add Instruction</i>
                         </a>
                     </li>
                 </ul>
+
             </div>
         </div>
         <!-- Submit Button -->
         <div class="row">
             <div class="col s12 center-align">
+                <!-- Cancel button -->
+                <a href="{{ url_for('home') }}" class="btn-large red text-shadow">
+                    Cancel <i class="fas fa-times-circle right"></i>
+                </a>
                 <button type="submit"
                     class="col s4 offset-s4 btn-large text-shadow register-button waves-effect waves-light">
-                    Edit Recipe <i class="fas fa-caret-right right"></i>
+                        Edit Recipe <i class="fas fa-caret-right right"></i>
                 </button>
             </div>
         </div>
