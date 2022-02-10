@@ -203,3 +203,20 @@ The GitHub Repository can be cloned in the following way:
 
 
 
+## Credits
+
+### Research 
+
+Inspiration for this project was taken from the Code Institute Task Manager mini project, as well as inspiration from the community slack channel.
+
+- In particular, [Plum Recipes]("https://plum-recipes.herokuapp.com/") by Sean Young and [Wanderlust Recipes]("https://wanderlust-recipes.herokuapp.com/") by Russ Oakham, both of which were excellent exmaples of the end goal of this project. 
+
+## Content
+
+Images used for this project on the developers side are taken from [Unsplash]("https://unsplash.com/")
+
+## Acknowledgements
+
+I would like to thank the staff at Code Institute for their help and communication during the creation of this project. 
+
+I would also like to thank my mentor Dick Vlaanderen for his guidance and my family for their support. 
