@@ -29,9 +29,8 @@ def home():
     recipes = list(mongo.db.recipes.find().sort("created_by", -1))
     categories = mongo.db.categories.find().sort("category_name", 1)
     return render_template(
-        "homepage.html",
-       # "recipes.html", 
-        categories=categories, 
+        "homepage.html", 
+        categories=categories,
         recipes=recipes)
 
 
@@ -103,7 +102,9 @@ def login():
 
     return render_template("login.html")
 
-
+"""
+    Code adapted from flask mini project
+"""
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
     """ take session username from the database """
@@ -113,6 +114,21 @@ def profile(username):
     if session["user"]:
         return render_template("profile.html", username=username)
 
+    users = list(mongo.db.users.find())
+
+    if session["user"] and get_acc_type() == "user":
+        recipes = list(mongo.db.recipes.find({"created_by": username}))
+        return render_template("profile.html",
+                               username=username,
+                               recipes=recipes)
+
+    elif session["user"] and get_acc_type() == "admin":
+        recipes = list(mongo.db.recipes.find())
+        return render_template("admin.html",
+                               username=username,
+                               recipes=recipes,
+                               users=users)
+    else:
         return redirect(url_for("login"))
 
 
@@ -181,7 +197,18 @@ def edit_recipe(recipe_id):
     return render_template("add_recipe.html", categories=categories)
 
     return redirect(url_for("login"))
+    
 
+def get_acc_type():
+    """
+    Returns the account type in the Session to differentiate between user access
+    """
+    try:
+        acc_type = session["acc_type"]
+        return acc_type
+    except:
+        acc_type = ''
+        return acc_type
 
 
 if __name__ == "__main__":
