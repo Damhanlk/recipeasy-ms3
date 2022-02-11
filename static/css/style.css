@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+
+
 body {
     background: #2980B9;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, #FFFFFF, #6DD5FA, #0288d1) !important;  /* Chrome 10-25, Safari 5.1-6 */
@@ -16,6 +18,11 @@ body {
     flex: 1 0 auto;
 }
 
+main {
+    flex: 1 0 auto;
+}
+
+/* Inline style used for social links */ 
 .social {
     list-style-type: none;
     text-align: center;
@@ -41,6 +48,28 @@ body {
 .brand-logo {
     margin-left: 10px;
 }
+
+/* Code for Recipe display section on homepage.html */ 
+
+  .recipe-display {
+    margin-top: 25px;
+  }
+  
+  /* Custom Code for Card images */
+  .card .card-image img {
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+    max-width:100%;
+    max-height:100%;
+  }
+  
+  .card-image {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 125px;
+  }
 
 /* Register page flash message */ 
 
@@ -127,3 +156,4 @@ body {
     display: block;
     border-radius: 25px;
 }
+

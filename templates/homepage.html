@@ -1,48 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1 class="light-blue-text text-darken-4 center-align"> Home Page</h1>
+<h3 class="light-blue-text text-darken-4 center-align">Home Page</h3>
+<!-- Search Box Section -->
+<div class="row card-panel white sm-6 center-align">
+    <form action="{{ url_for('search') }}" method="post" class="col s12">
+        <div class="row valign-wrapper center-align">
+            <div class="input-field col s12 m8">
+                <i class="fas fa-search prefix amber-text text-darken-2"></i>
+                <input type="text" name="query" id="query" minlength="3" class="validate" required>
+                <label for="query">Search Recipes</label>
+            </div>
+            <div class="col s12 m4">
+                <a href="{{ url_for('home') }}" class="amber darken-2 btn text-shadow">Reset</a>
+                <button type="submit" class="light-blue darken-1 btn text-shadow">
+                    <i class="fas fa-search left amber-text text-darken-2"></i> Search
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
 
-<section class="row recipe-display">
-    <div class="card col s12 m3">
-        <div class="card-image waves-effect waves-block waves-light">
-          <img class="activator" src="images/test-homepage.jpg">
-        </div>
-        <div class="card-content">
-          <span class="card-title grey-text text-darken-4">Recipe Title<i class="material-icons right">more_vert</i></span>
-          <p><a href="#">This is a link</a></p>
-        </div>
-        <div class="card-reveal">
-          <span class="card-title grey-text text-darken-4">Recipe Title<i class="material-icons right">close</i></span>
-          <p>More info on recipe revealed when clicked on</p>
-        </div>
+{% if recipes|length > 0 %}
+<!-- Recipe Display Section -->
+<section class="recipe-display">
+  {% for recipe in recipes %}
+    {% if loop.index == 1 or loop.index % 4 == 0 %}
+      <div class="row">
+          <div class="card col s12 m3">
+    {% else %}
+      <div class="card col s12 m3 offset-m1">
+    {% endif %}
+      <div class="card-image waves-effect waves-block waves-light">
+        <img class="activator" src="{{ recipe.img_url }}" alt="Display image for {{ recipe.recipe_name }}">
+      </div>
+      <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4"><strong>{{ recipe.recipe_name }}</strong><i
+            class="material-icons right">more_vert</i></span>
+        <p><u>{{ recipe.category_name }}</u></p>
+      </div>
+      <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4"><strong>{{ recipe.recipe_name }}</strong><i
+            class="material-icons right">close</i></span>
+        <p>{{ recipe.description }}</p>
+      </div>
     </div>
-    <div class="card col s12 m3 offset-m1">
-        <div class="card-image waves-effect waves-block waves-light">
-          <img class="activator" src="images/test-homepage.jpg">
-        </div>
-        <div class="card-content">
-          <span class="card-title grey-text text-darken-4">Recipe Title<i class="material-icons right">more_vert</i></span>
-          <p><a href="#">This is a link</a></p>
-        </div>
-        <div class="card-reveal">
-          <span class="card-title grey-text text-darken-4">Recipe Title<i class="material-icons right">close</i></span>
-          <p>More info on recipe revealed when clicked on</p>
-        </div>
-    </div>
-    <div class="card col s12 m3 offset-m1">
-        <div class="card-image waves-effect waves-block waves-light">
-          <img class="activator" src="images/test-homepage.jpg">
-        </div>
-        <div class="card-content">
-          <span class="card-title grey-text text-darken-4">Recipe Title<i class="material-icons right">more_vert</i></span> 
-          <p><a href="#">This is a link</a></p>
-        </div>
-        <div class="card-reveal">
-          <span class="card-title grey-text text-darken-4">Recipe Title<i class="material-icons right">close</i></span>
-          <p>More info on recipe revealed when clicked on.</p>
-        </div>
-    </div>
+    {% if loop.index % 3 == 0 or loop.last%}
+      </div>
+    {% endif %}
+  {% endfor %}
 </section>
+
 
 {% endblock %}
