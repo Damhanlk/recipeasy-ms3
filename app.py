@@ -29,7 +29,8 @@ def home():
     recipes = list(mongo.db.recipes.find().sort("created_by", -1))
     categories = mongo.db.categories.find().sort("category_name", 1)
     return render_template(
-        "recipes.html", 
+        "homepage.html",
+       # "recipes.html", 
         categories=categories, 
         recipes=recipes)
 
