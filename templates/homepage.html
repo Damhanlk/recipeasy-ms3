@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3 class="amber-text text-darken-2 center-align">Welcome to Recipeasy!</h3>
-<h4 class="amber-text text-darken-2 center-align">Sign-Up, Search for and Add your favourite recipes. Let's get cooking!</h4>
+<h3 class="page-h2 white-text text-shadow center-align">Welcome to Recipeasy!</h3>
+<h4 class="page-h2 white-text text-shadow center-align">Sign-Up, Search for and Add your favourite recipes. Let's get cooking!</h4>
 <!-- Search Box Section -->
 <div class="row card-panel white sm-6 center-align">
     <form action="{{ url_for('search') }}" method="post" class="col s12">
@@ -43,7 +43,7 @@
       <div class="card-reveal">
         <span class="card-title grey-text text-darken-4"><strong>{{ recipe.recipe_name }}</strong><i
             class="material-icons right">close</i></span>
-        <p>{{ recipe.description }}</p>
+        <p>{{ recipe.recipe_description }}</p>
       </div>
     </div>
     {% if loop.index % 3 == 0 or loop.last%}
