@@ -82,3 +82,35 @@ def logout():
     session.pop("acc_type")
     return redirect(url_for("login"))
 
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+
+        # check if username already exists in db
+        existing_user = mongo.db.users.find_one(
+            {"username": request.form.get("username").lower()})
+
+        if existing_user:
+            flash("Username already exists")
+            return redirect(url_for("register"))
+
+        # Checks if passwords match
+        if request.form.get(
+             'password') != request.form.get('password-confirm'):
+            # If passwords don't match, flash the message below to the user and return to form
+            flash("Passwords do not match")
+            return redirect(url_for('register'))
+
+        register = {
+            "username": request.form.get("username").lower(),
+            "password": generate_password_hash(request.form.get("password"))
+        }
+        mongo.db.users.insert_one(register)
+
+        # put the new user into 'session' cookie
+        session["user"] = request.form.get("username").lower()
+        flash("Registration Successful!")
+        return redirect(url_for("profile", username=session["user"]))
+
+    return render_template("register.html")
