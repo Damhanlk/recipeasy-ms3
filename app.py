@@ -324,3 +324,9 @@ def get_acc_type():
     except:
         acc_type = ''
         return acc_type
+        
+
+if __name__ == "__main__":
+    app.run(host=os.environ.get("IP"),
+            port=int(os.environ.get("PORT")),
+            debug=True)
