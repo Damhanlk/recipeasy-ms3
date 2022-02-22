@@ -311,3 +311,16 @@ def get_user():
     except:
         user = ''
         return user
+
+
+# Fetches account type so session is either user/admin
+def get_acc_type():
+    """
+    Method returns the account type in the Session
+    """
+    try:
+        acc_type = session["acc_type"]
+        return acc_type
+    except:
+        acc_type = ''
+        return acc_type
