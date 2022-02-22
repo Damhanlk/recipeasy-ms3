@@ -275,3 +275,26 @@ def delete_user(user_id):
     flash("User has been removed")
     return redirect(url_for("login"))
 
+
+#Display recipes with Pagination
+def display_recipes(recipe_list, curr_page, per_page):
+    """
+    Method to handle recipe pagination. Lists recipes and
+    the current page the user is on
+    """
+
+    next_index = 9
+
+    recipes_to_display = []
+
+    if curr_page > 1:
+        offset = (curr_page - 1) * per_page
+        if (offset + next_index) > len(recipe_list):
+            recipes_to_display = recipe_list[offset:]
+        else:
+            recipes_to_display = recipe_list[offset:next_index]
+    else:
+        offset = 0
+        recipes_to_display = recipe_list[offset:next_index]
+
+    return recipes_to_display
