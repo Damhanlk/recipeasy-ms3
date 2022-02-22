@@ -18,8 +18,8 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
-# Routing 
 
+# Routing
 @app.route("/")
 def home():
     """
@@ -138,7 +138,7 @@ def profile(username):
 
 
 # CRUD Functionality
-# Add recipe function 
+# Add recipe function
 
 @app.route("/add_recipe", methods=["GET", "POST"])
 def add_recipe():
@@ -152,11 +152,11 @@ def add_recipe():
         rv = rv.decode('ascii')
         if recipe is not None:
             flash("Recipe Already Exists")
-        else:
+    else:
             new_recipe = {
                 "category_name": request.form.get("category_name"),
                 "recipe_name": request.form.get("recipe_name"),
-                "image_url": request.form.get("image_url"),
+                "image_url": rv,
                 "prep_hours": request.form.get("prep_hours"),
                 "prep_minutes": request.form.get("prep_minutes"),
                 "cook_hours": request.form.get("cook_hours"),
@@ -185,3 +185,50 @@ def add_recipe():
                            username=get_user(),
                            categories=categories,
                            acc_type=get_acc_type())
+
+
+# Edit Recipe Functionality
+@app.route("/edit_recipe/<recipe_id>", methods=["GET", "POST"])
+def edit_recipe(recipe_id):
+    """
+    Edit selected recipe
+    """
+    game = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+
+    if request.method == "POST":
+        file = request.files['img_url']
+        rv = base64.b64encode(file.read())
+        rv = rv.decode('ascii')
+        submit = {
+            "recipe_name": recipe['name'],
+            "img_url": rv,
+            "prep_hours": request.form.get("prep_hours"),
+            "prep_minutes": request.form.get("prep_minutes"),
+            "cook_hours": request.form.get("cook_hours"),
+            "cook_minutes": request.form.get("cook_minutes"),
+            "recipe_description": request.form.get("recipe_description"),
+            "recipe_servings": request.form.get("recipe_servings"),
+            "recipe_instruction": request.form.getlist("recipe_instruction"),
+            "ingredients": request.form.getlist("ingredients"),
+            "created_by": session["user"],
+        }
+        mongo.db.recipes.update({"_id": ObjectId(recipe_id)}, submit)
+        flash("Recipe Updated!")
+        if get_acc_type() == "admin":
+            return redirect(url_for("admin", 
+                            username=get_user(),
+                            acc_type=get_acc_type()))
+        else:
+            return redirect(url_for("profile", 
+                            username=get_user(),
+                            acc_type=get_acc_type()))
+
+    categories = mongo.db.categories.find().sort("category_name", 1)
+
+    return render_template("edit_recipe.html",
+                           username=get_user(),
+                           recipe=recipe,
+                           categories=categories,
+                           acc_type=get_acc_type())
+
+
