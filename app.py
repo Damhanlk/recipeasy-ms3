@@ -26,7 +26,7 @@ def search():
     recipes = list(mongo.db.recipes.find({"$text": {"$search": query}}))
     return render_template("recipes.html", recipes=recipes)
 
-    
+
 # Routing
 @app.route("/")
 def home():
@@ -76,7 +76,7 @@ def login():
             flash("Incorrect Username and/or Password")
             return redirect(url_for("login"))
 
-    return render_template("login.html")
+    return render_template("profile.html")
 
 
 @app.route("/logout")
@@ -92,7 +92,7 @@ def logout():
 
 
 @app.route("/register", methods=["GET", "POST"])
-def register_user():
+def register():
     if request.method == "POST":
 
         # check if username already exists in db
@@ -111,7 +111,7 @@ def register_user():
             flash("Passwords do not match")
             return redirect(url_for('register'))
 
-        register_user = {
+        register = {
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password"))
         }
