@@ -135,3 +135,53 @@ def profile(username):
                                recipes=recipes)
     else:
         return redirect(url_for("login"))
+
+
+# CRUD Functionality
+# Add recipe function 
+
+@app.route("/add_recipe", methods=["GET", "POST"])
+def add_recipe():
+    """
+    Add new recipe to the Database
+    """
+    if request.method == "POST":
+        game = mongo.db.recipes.find_one({"name": request.form.get("name")})
+        file = request.files['img_url']
+        rv = base64.b64encode(file.read())
+        rv = rv.decode('ascii')
+        if recipe is not None:
+            flash("Recipe Already Exists")
+        else:
+            new_recipe = {
+                "category_name": request.form.get("category_name"),
+                "recipe_name": request.form.get("recipe_name"),
+                "image_url": request.form.get("image_url"),
+                "prep_hours": request.form.get("prep_hours"),
+                "prep_minutes": request.form.get("prep_minutes"),
+                "cook_hours": request.form.get("cook_hours"),
+                "cook_minutes": request.form.get("cook_minutes"),
+                "recipe_description": request.form.get("recipe_description"),
+                "recipe_servings": request.form.get("recipe_servings"),
+                "recipe_instruction": request.form.getlist("recipe_instruction"),
+                "ingredients": request.form.getlist("ingredients"),
+                "created_by": session["user"],
+            }
+
+            mongo.db.recipes.insert_one(new_recipe)
+            flash("Recipe Added!")
+            if get_acc_type() == "admin":
+                return redirect(url_for("admin", 
+                                username=get_user(),
+                                acc_type=get_acc_type()))
+            else:
+                return redirect(url_for("profile", 
+                            username=get_user(),
+                            acc_type=get_acc_type()))
+
+    categories = mongo.db.categories.find().sort("category_name", 1)
+
+    return render_template("add_recipe.html",
+                           username=get_user(),
+                           categories=categories,
+                           acc_type=get_acc_type())
