@@ -262,3 +262,16 @@ def display_recipe(recipe_id):
                            username=get_user(),
                            recipe=recipe,
                            acc_type=get_acc_type())
+
+
+# Delete User functionality
+
+@app.route("/delete_user/<user_id>", methods=["GET"])
+def delete_user(user_id):
+    """
+    This method deletes the selected user and their recipe submissions
+    """
+    mongo.db.users.remove({"_id": ObjectId(user_id)})
+    flash("User has been removed")
+    return redirect(url_for("login"))
+
