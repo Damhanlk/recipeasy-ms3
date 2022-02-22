@@ -114,3 +114,24 @@ def register():
         return redirect(url_for("profile", username=session["user"]))
 
     return render_template("register.html")
+
+
+# Profile Page function to display recipes submitted by user 
+
+@app.route("/profile/<username>", methods=["GET", "POST"])
+def profile(username):
+    """
+    Adapted Code from the Flask task project
+    """
+    username = mongo.db.users.find_one(
+        {"username": session["user"]})["username"]
+
+    users = list(mongo.db.users.find())
+
+    if session["user"] and get_acc_type() == "user":
+        recipes = list(mongo.db.reviews.find({"created_by": username}))
+        return render_template("profile.html",
+                               username=username,
+                               recipes=recipes)
+    else:
+        return redirect(url_for("login"))
