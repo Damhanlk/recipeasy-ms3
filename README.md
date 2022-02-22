@@ -1,7 +1,7 @@
 
 # Recipeasy - Milestone 3 Project 
 
-"Recipeasy" is a commmunity focused website, where users can create and review recipe ideas.
+"Recipeasy" is a commmunity focused website, where users can create and search for recipe ideas.
 
 The site is created to engage users of all ages, backgrounds and tastes, and so it was created with a clean, neutral style. 
 
