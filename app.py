@@ -232,3 +232,21 @@ def edit_recipe(recipe_id):
                            acc_type=get_acc_type())
 
 
+# Delete Recipe Functionality 
+@app.route("/delete_recipe/<recipe_id>")
+def delete_recipe(recipe_id):
+    """
+    Delete selected recipe
+    """
+    mongo.db.recipes.remove({"_id": ObjectId(recipe_id)})
+    flash("Recipe Deleted!")
+    if get_acc_type() == "admin":
+        return redirect(url_for("admin", 
+                        username=get_user(),
+                        acc_type=get_acc_type()))
+    else:
+        return redirect(url_for("profile", 
+                        username=get_user(),
+                        acc_type=get_acc_type()))
+
+
