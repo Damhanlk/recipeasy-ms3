@@ -17,3 +17,26 @@ app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
+
+# Routing 
+
+@app.route("/")
+def home():
+    """
+    This method loads the recipes in MongoDB into a list
+    for pagination and display on he index page
+    """
+    per_page = 6
+
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+
+    games = list(mongo.db.recipes.find())
+
+    pagination = Pagination(page=page, per_page=per_page, total=len(games))
+
+    return render_template("homepage.html",
+                           recipes=display_recipes(recipes, page, per_page),
+                           pagination=pagination,
+                           username=get_user(),
+                           acc_type=get_acc_type())
+
