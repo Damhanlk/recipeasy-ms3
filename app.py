@@ -69,3 +69,16 @@ def login():
             return redirect(url_for("login"))
 
     return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    """
+    Remove session to log user out
+    """
+    # remove user from session cookie
+    flash("You have been logged out")
+    session.pop("user")
+    session.pop("acc_type")
+    return redirect(url_for("login"))
+
