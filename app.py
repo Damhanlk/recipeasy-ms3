@@ -18,6 +18,31 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
+# Pagination logic 
+
+PER_PAGE = 10
+
+# https://gist.github.com/mozillazg/69fb40067ae6d80386e10e105e6803c9
+def paginated(recipes):
+    """ Sets Pagination for long content pages """
+    page, per_page, offset = get_page_args(
+                            page_parameter='page',
+                            per_page_parameter='per_page')
+    offset = page * PER_PAGE - PER_PAGE
+
+    return recipes[offset: offset + PER_PAGE]
+
+
+def pagination_args(recipes):
+    """ Sets Pagination for long content pages """
+    page, per_page, offset = get_page_args(
+                            page_parameter='page',
+                            per_page_parameter='per_page')
+    total = len(recipes)
+
+    return Pagination(page=page, per_page=PER_PAGE, total=total)
+
+
 # Routing
 
 
@@ -29,7 +54,7 @@ def home():
     recipes = list(mongo.db.recipes.find().sort("created_by", -1))
     categories = mongo.db.categories.find().sort("category_name", 1)
     return render_template(
-        "homepage.html", 
+        "homepage.html",
         categories=categories,
         recipes=recipes)
 
@@ -102,6 +127,7 @@ def login():
 
     return render_template("login.html")
 
+
 """
     Code adapted from flask mini project
 """
@@ -165,7 +191,7 @@ def add_recipe():
         return redirect(url_for("add_recipe"))
 
     categories = mongo.db.categories.find().sort("category_name", 1)
-    return render_template("add_recipe.html", categories=categories)
+    return render_template("add_recipe1.html", categories=categories)
 
 
 # Copy add_recipe function and adapt to edit existing recipes
@@ -214,4 +240,4 @@ def get_acc_type():
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
-            debug=True) 
+            debug=True)
