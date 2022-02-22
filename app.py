@@ -250,3 +250,15 @@ def delete_recipe(recipe_id):
                         acc_type=get_acc_type()))
 
 
+# Routing to display a selected recipe 
+@app.route("/display_recipe/<recipe_id>", methods=["GET"])
+def display_recipe(recipe_id):
+    """
+    This method returns the selected recipe
+    """
+    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+
+    return render_template("display_recipe.html",
+                           username=get_user(),
+                           recipe=recipe,
+                           acc_type=get_acc_type())
