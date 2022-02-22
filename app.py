@@ -1,4 +1,5 @@
 import os
+import base64
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
@@ -19,6 +20,13 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    query = request.form.get("query")
+    recipes = list(mongo.db.recipes.find({"$text": {"$search": query}}))
+    return render_template("recipes.html", recipes=recipes)
+
+    
 # Routing
 @app.route("/")
 def home():
@@ -30,9 +38,9 @@ def home():
 
     page = request.args.get(get_page_parameter(), type=int, default=1)
 
-    games = list(mongo.db.recipes.find())
+    recipes = list(mongo.db.recipes.find())
 
-    pagination = Pagination(page=page, per_page=per_page, total=len(games))
+    pagination = Pagination(page=page, per_page=per_page, total=len(recipes))
 
     return render_template("homepage.html",
                            recipes=display_recipes(recipes, page, per_page),
@@ -48,11 +56,11 @@ def login():
         # check if user already exists in database
         existing_user = mongo.db.users.find_one(
             {"username": request.form.get("username").lower()})
-       
+
         if existing_user:
             # Check if hashed password matches user input
             if check_password_hash(
-                existing_user["password"], request.form.get("password")):
+                    existing_user["password"], request.form.get("password")):
                     session["user"] = request.form.get("username").lower()
                     flash("Welcome, {}".format(
                         request.form.get("username")))
@@ -84,7 +92,7 @@ def logout():
 
 
 @app.route("/register", methods=["GET", "POST"])
-def register():
+def register_user():
     if request.method == "POST":
 
         # check if username already exists in db
@@ -98,11 +106,12 @@ def register():
         # Checks if passwords match
         if request.form.get(
              'password') != request.form.get('password-confirm'):
-            # If passwords don't match, flash the message below to the user and return to form
+            # If passwords don't match
+            # flash the message below to the user and return to form
             flash("Passwords do not match")
             return redirect(url_for('register'))
 
-        register = {
+        register_user = {
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password"))
         }
@@ -116,7 +125,7 @@ def register():
     return render_template("register.html")
 
 
-# Profile Page function to display recipes submitted by user 
+# Profile Page function to display recipes submitted by user
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
@@ -146,7 +155,7 @@ def add_recipe():
     Add new recipe to the Database
     """
     if request.method == "POST":
-        game = mongo.db.recipes.find_one({"name": request.form.get("name")})
+        recipe = mongo.db.recipes.find_one({"name": request.form.get("name")})
         file = request.files['img_url']
         rv = base64.b64encode(file.read())
         rv = rv.decode('ascii')
@@ -163,7 +172,8 @@ def add_recipe():
                 "cook_minutes": request.form.get("cook_minutes"),
                 "recipe_description": request.form.get("recipe_description"),
                 "recipe_servings": request.form.get("recipe_servings"),
-                "recipe_instruction": request.form.getlist("recipe_instruction"),
+                "recipe_instruction": request.form.getlist(
+                    "recipe_instruction"),
                 "ingredients": request.form.getlist("ingredients"),
                 "created_by": session["user"],
             }
@@ -171,13 +181,13 @@ def add_recipe():
             mongo.db.recipes.insert_one(new_recipe)
             flash("Recipe Added!")
             if get_acc_type() == "admin":
-                return redirect(url_for("admin", 
+                return redirect(url_for("admin",
                                 username=get_user(),
                                 acc_type=get_acc_type()))
             else:
-                return redirect(url_for("profile", 
-                            username=get_user(),
-                            acc_type=get_acc_type()))
+                return redirect(url_for("profile",
+                                username=get_user(),
+                                acc_type=get_acc_type()))
 
     categories = mongo.db.categories.find().sort("category_name", 1)
 
@@ -193,7 +203,7 @@ def edit_recipe(recipe_id):
     """
     Edit selected recipe
     """
-    game = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
+    recipe = mongo.db.recipes.find_one({"_id": ObjectId(recipe_id)})
 
     if request.method == "POST":
         file = request.files['img_url']
@@ -215,11 +225,11 @@ def edit_recipe(recipe_id):
         mongo.db.recipes.update({"_id": ObjectId(recipe_id)}, submit)
         flash("Recipe Updated!")
         if get_acc_type() == "admin":
-            return redirect(url_for("admin", 
+            return redirect(url_for("admin",
                             username=get_user(),
                             acc_type=get_acc_type()))
         else:
-            return redirect(url_for("profile", 
+            return redirect(url_for("profile",
                             username=get_user(),
                             acc_type=get_acc_type()))
 
@@ -232,7 +242,7 @@ def edit_recipe(recipe_id):
                            acc_type=get_acc_type())
 
 
-# Delete Recipe Functionality 
+# Delete Recipe Functionality
 @app.route("/delete_recipe/<recipe_id>")
 def delete_recipe(recipe_id):
     """
@@ -241,16 +251,16 @@ def delete_recipe(recipe_id):
     mongo.db.recipes.remove({"_id": ObjectId(recipe_id)})
     flash("Recipe Deleted!")
     if get_acc_type() == "admin":
-        return redirect(url_for("admin", 
+        return redirect(url_for("admin",
                         username=get_user(),
                         acc_type=get_acc_type()))
     else:
-        return redirect(url_for("profile", 
+        return redirect(url_for("profile",
                         username=get_user(),
                         acc_type=get_acc_type()))
 
 
-# Routing to display a selected recipe 
+# Routing to display a selected recipe
 @app.route("/display_recipe/<recipe_id>", methods=["GET"])
 def display_recipe(recipe_id):
     """
@@ -276,7 +286,7 @@ def delete_user(user_id):
     return redirect(url_for("login"))
 
 
-#Display recipes with Pagination
+# Display recipes with Pagination
 def display_recipes(recipe_list, curr_page, per_page):
     """
     Method to handle recipe pagination. Lists recipes and
@@ -324,7 +334,7 @@ def get_acc_type():
     except:
         acc_type = ''
         return acc_type
-        
+
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
