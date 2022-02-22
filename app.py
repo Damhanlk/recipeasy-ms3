@@ -298,3 +298,16 @@ def display_recipes(recipe_list, curr_page, per_page):
         recipes_to_display = recipe_list[offset:next_index]
 
     return recipes_to_display
+
+
+# Deals with session user
+def get_user():
+    """
+    Method returns the user in the Session
+    """
+    try:
+        user = session["user"]
+        return user
+    except:
+        user = ''
+        return user
