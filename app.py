@@ -32,7 +32,7 @@ def search():
 def home():
     """
     This method loads the recipes in MongoDB into a list
-    for pagination and display on he index page
+    for pagination and display on the home page
     """
     per_page = 6
 
@@ -76,7 +76,7 @@ def login():
             flash("Incorrect Username and/or Password")
             return redirect(url_for("login"))
 
-    return render_template("profile.html")
+    return render_template("login.html")
 
 
 @app.route("/logout")
@@ -138,7 +138,7 @@ def profile(username):
     users = list(mongo.db.users.find())
 
     if session["user"] and get_acc_type() == "user":
-        recipes = list(mongo.db.reviews.find({"created_by": username}))
+        recipes = list(mongo.db.recipes.find({"created_by": username}))
         return render_template("profile.html",
                                username=username,
                                recipes=recipes)
@@ -155,17 +155,10 @@ def add_recipe():
     Add new recipe to the Database
     """
     if request.method == "POST":
-        recipe = mongo.db.recipes.find_one({"name": request.form.get("name")})
-        file = request.files['img_url']
-        rv = base64.b64encode(file.read())
-        rv = rv.decode('ascii')
-        if recipe is not None:
-            flash("Recipe Already Exists")
-    else:
             new_recipe = {
                 "category_name": request.form.get("category_name"),
                 "recipe_name": request.form.get("recipe_name"),
-                "image_url": rv,
+                "image_url": request.form.get("image_url"),
                 "prep_hours": request.form.get("prep_hours"),
                 "prep_minutes": request.form.get("prep_minutes"),
                 "cook_hours": request.form.get("cook_hours"),
@@ -316,7 +309,7 @@ def get_user():
     Method returns the user in the Session
     """
     try:
-        user = session["user"]
+        user = session["username"]
         return user
     except:
         user = ''
